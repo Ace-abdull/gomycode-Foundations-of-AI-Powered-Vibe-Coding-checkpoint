@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -9,6 +10,34 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+
+const ROOT_HEAD = {
+  meta: [
+    { charSet: "utf-8" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { title: "Foundation Landing Page" },
+    {
+      name: "description",
+      content:
+        "A modern portfolio-style landing page built with React, Vite, Tailwind CSS, and TanStack.",
+    },
+    { name: "author", content: "Foundation" },
+    { property: "og:title", content: "Foundation Landing Page" },
+    {
+      property: "og:description",
+      content:
+        "A modern portfolio-style landing page built with React, Vite, Tailwind CSS, and TanStack.",
+    },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ],
+  links: [
+    {
+      rel: "stylesheet",
+      href: appCss,
+    },
+  ],
+};
 
 function NotFoundComponent() {
   return (
@@ -68,33 +97,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-  }),
+  head: () => ROOT_HEAD,
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
+type RootShellProps = {
+  children: ReactNode;
+};
+
+function RootShell({ children }: RootShellProps) {
   return (
     <html lang="en">
       <head>

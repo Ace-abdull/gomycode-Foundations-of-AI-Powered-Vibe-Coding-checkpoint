@@ -1,5 +1,19 @@
+import type { ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Github, Linkedin, ArrowRight } from "lucide-react";
+
+const socialLinks = [
+  {
+    href: "https://github.com",
+    label: "GitHub",
+    Icon: Github,
+  },
+  {
+    href: "https://linkedin.com",
+    label: "LinkedIn",
+    Icon: Linkedin,
+  },
+] as const;
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -28,12 +42,17 @@ function Index() {
       style={{ background: "var(--gradient-hero), var(--color-background)" }}
     >
       {/* Ambient glows */}
-      <div className="pointer-events-none absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-        style={{ background: "var(--accent-glow)" }} />
-      <div className="pointer-events-none absolute bottom-0 right-10 h-72 w-72 rounded-full opacity-30 blur-3xl"
-        style={{ background: "var(--accent-glow-2)" }} />
+      <div
+        className="pointer-events-none absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+        style={{ background: "var(--accent-glow)" }}
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 right-10 h-72 w-72 rounded-full opacity-30 blur-3xl"
+        style={{ background: "var(--accent-glow-2)" }}
+      />
 
       <section
+        id="projects"
         className="relative z-10 w-full max-w-2xl rounded-3xl border p-10 text-center backdrop-blur-xl sm:p-14 animate-fade-in"
         style={{
           background: "var(--glass-bg)",
@@ -41,8 +60,10 @@ function Index() {
           boxShadow: "var(--shadow-glow)",
         }}
       >
-        <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-medium tracking-widest uppercase text-muted-foreground"
-          style={{ borderColor: "var(--glass-border)" }}>
+        <p
+          className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-medium tracking-widest uppercase text-muted-foreground"
+          style={{ borderColor: "var(--glass-border)" }}
+        >
           Available for work
         </p>
 
@@ -63,8 +84,8 @@ function Index() {
         </h2>
 
         <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Passionate about building clean, responsive, and interactive web
-          experiences using modern frontend technologies.
+          Passionate about building clean, responsive, and interactive web experiences using modern
+          frontend technologies.
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-6">
@@ -81,12 +102,11 @@ function Index() {
           </a>
 
           <div className="flex items-center gap-3">
-            <SocialLink href="https://github.com" label="GitHub">
-              <Github className="h-5 w-5" />
-            </SocialLink>
-            <SocialLink href="https://linkedin.com" label="LinkedIn">
-              <Linkedin className="h-5 w-5" />
-            </SocialLink>
+            {socialLinks.map(({ href, label, Icon }) => (
+              <SocialLink key={label} href={href} label={label}>
+                <Icon className="h-5 w-5" />
+              </SocialLink>
+            ))}
           </div>
         </div>
       </section>
@@ -94,15 +114,13 @@ function Index() {
   );
 }
 
-function SocialLink({
-  href,
-  label,
-  children,
-}: {
+type SocialLinkProps = {
   href: string;
   label: string;
-  children: React.ReactNode;
-}) {
+  children: ReactNode;
+};
+
+function SocialLink({ href, label, children }: SocialLinkProps) {
   return (
     <a
       href={href}
